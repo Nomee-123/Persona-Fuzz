@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://persona-fuzz.dev/contracts/episode.schema.json",
+  "title": "Persona-Fuzz episode trace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "episode_id", "run_id", "persona_id", "split", "condition", "model",
+    "task_class", "task_text", "attack", "steps", "outcome", "tokens", "latency_ms"
+  ],
+  "properties": {
+    "episode_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "persona_id": { "type": "string" },
+    "split": { "enum": ["fit", "eval", "sample"] },
+    "condition": { "enum": ["D0", "D1", "D2", "D3", "D4"] },
+    "model": { "type": "string" },
+    "task_class": { "enum": ["inbox", "schedule", "research"] },
+    "task_text": { "type": "string" },
+    "attack": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["vector", "goal", "template_id", "split", "adaptive_round"],
+          "properties": {
+            "vector": { "enum": ["email", "calendar", "web"] },
+            "goal": { "enum": ["exfil_email", "exfil_web", "exfil_invite", "destructive"] },
+            "template_id": { "type": "string" },
+            "split": { "enum": ["train", "eval"] },
+            "adaptive_round": { "type": "integer", "minimum": 0 },
+            "target_category": { "type": "string" },
+            "attacker": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["t", "role", "content", "tool_call", "tool_result", "provenance", "gateway", "ts"],
+        "properties": {
+          "t": { "type": "integer", "minimum": 0 },
+          "role": { "enum": ["system", "user", "assistant", "tool"] },
+          "content": { "type": "string" },
+          "tool_call": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "args"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "args": { "type": "object" },
+                  "call_id": { "type": ["string", "null"] }
+                }
+              }
+            ]
+          },
+          "tool_result": { "type": ["string", "null"] },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["trusted", "source"],
+            "properties": {
+              "trusted": { "type": "boolean" },
+              "source": { "type": "string" }
+            }
+          },
+          "gateway": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["decision", "rule_id", "reason"],
+                "properties": {
+                  "decision": { "enum": ["allow", "block", "ask"] },
+                  "rule_id": { "type": "string" },
+                  "reason": { "type": "string" }
+                }
+              }
+            ]
+          },
+          "ts": { "type": "string" }
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["utility_ok", "leak", "unauthorized_action", "blocked_count", "ask_count"],
+      "properties": {
+        "utility_ok": { "type": "boolean" },
+        "utility_detail": { "type": "string" },
+        "leak": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["detected", "canary_ids", "via_tool", "via_host", "step"],
+          "properties": {
+            "detected": { "type": "boolean" },
+            "canary_ids": { "type": "array", "items": { "type": "string" } },
+            "via_tool": { "type": ["string", "null"] },
+            "via_host": { "type": ["string", "null"] },
+            "step": { "type": ["integer", "null"] }
+          }
+        },
+        "unauthorized_action": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["detected", "tool", "step"],
+          "properties": {
+            "detected": { "type": "boolean" },
+            "tool": { "type": ["string", "null"] },
+            "step": { "type": ["integer", "null"] }
+          }
+        },
+        "blocked_count": { "type": "integer", "minimum": 0 },
+        "ask_count": { "type": "integer", "minimum": 0 },
+        "false_blocks": { "type": "integer", "minimum": 0 },
+        "benign_calls": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tokens": { "type": "integer", "minimum": 0 },
+    "latency_ms": { "type": "number", "minimum": 0 },
+    "enforcement": { "enum": ["gateway", "openshell"] },
+    "synthetic_fixture": { "type": "boolean" },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,3 @@
+datasets>=3.0
+# NVIDIA garak is optional; install separately when available.
+# garak

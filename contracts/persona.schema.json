@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://persona-fuzz.dev/contracts/persona.schema.json",
+  "title": "Persona-Fuzz synthetic persona",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "persona_id",
+    "persona_uuid",
+    "display_name",
+    "role",
+    "age",
+    "sex",
+    "state",
+    "district",
+    "occupation",
+    "background",
+    "split"
+  ],
+  "properties": {
+    "persona_id": {
+      "type": "string"
+    },
+    "persona_uuid": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 18,
+      "maximum": 100
+    },
+    "sex": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "occupation": {
+      "type": "string"
+    },
+    "background": {
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "fit",
+        "eval",
+        "sample"
+      ]
+    },
+    "life": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inbox_count",
+        "calendar_count",
+        "notes_count",
+        "apps_count",
+        "contacts_count",
+        "files_count",
+        "chat_count"
+      ],
+      "properties": {
+        "inbox_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calendar_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "apps_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "contacts_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "files_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "chat_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "canaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "canary_id",
+          "category"
+        ],
+        "properties": {
+          "canary_id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "hobbies": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "string"
+    }
+  }
+}

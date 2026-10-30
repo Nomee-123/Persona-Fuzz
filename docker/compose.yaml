@@ -1,0 +1,18 @@
+services:
+  persona-fuzz:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      NEBIUS_API_KEY: ${NEBIUS_API_KEY:-}
+      NEBIUS_BASE_URL: ${NEBIUS_BASE_URL:-https://api.tokenfactory.nebius.com/v1/}
+      PF_MODEL: ${PF_MODEL:-}
+      PF_MAX_USD: ${PF_MAX_USD:-25}
+    volumes:
+      - persona-fuzz-runs:/app/runs
+    restart: unless-stopped
+
+volumes:
+  persona-fuzz-runs:

@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "union": {
+    "version": 1,
+    "task_class": "union",
+    "allowed_tools": [
+      "calendar.create",
+      "calendar.list",
+      "contacts.search",
+      "email.list",
+      "email.read",
+      "email.send",
+      "notes.write",
+      "web.fetch",
+      "web.search"
+    ],
+    "allowed_hosts": [
+      "weather.com"
+    ],
+    "denied_tools": [],
+    "arg_rules": {
+      "calendar.create": {
+        "body": {
+          "not_contains_class": [
+            "bank",
+            "medical",
+            "personal",
+            "financial",
+            "identity"
+          ]
+        }
+      },
+      "email.send": {
+        "to": {
+          "subset_of": "$contacts.trusted"
+        },
+        "body": {
+          "not_contains_class": [
+            "bank",
+            "medical",
+            "personal",
+            "financial",
+            "identity"
+          ]
+        }
+      }
+    },
+    "flow_rules": [
+      {
+        "id": "FR1",
+        "when": "context.untrusted",
+        "sinks": [
+          "email.*",
+          "web.*",
+          "sms.*",
+          "chat.send",
+          "calendar.invite",
+          "calendar.share",
+          "file.share",
+          "bank.*",
+          "shell.exec"
+        ],
+        "require": {
+          "recipient_or_host": "in_user_task_or_trusted_contacts"
+        }
+      }
+    ],
+    "on_violation": "block"
+  },
+  "by_task_class": {
+    "inbox": {
+      "version": 1,
+      "task_class": "inbox",
+      "allowed_tools": [
+        "calendar.create",
+        "email.list",
+        "email.read"
+      ],
+      "allowed_hosts": [],
+      "denied_tools": [],
+      "arg_rules": {
+        "calendar.create": {
+          "body": {
+            "not_contains_class": [
+              "bank",
+              "medical",
+              "personal",
+              "financial",
+              "identity"
+            ]
+          }
+        }
+      },
+      "flow_rules": [
+        {
+          "id": "FR1",
+          "when": "context.untrusted",
+          "sinks": [
+            "email.*",
+            "web.*",
+            "sms.*",
+            "chat.send",
+            "calendar.invite",
+            "calendar.share",
+            "file.share",
+            "bank.*",
+            "shell.exec"
+          ],
+          "require": {
+            "recipient_or_host": "in_user_task_or_trusted_contacts"
+          }
+        }
+      ],
+      "on_violation": "block"
+    },
+    "schedule": {
+      "version": 1,
+      "task_class": "schedule",
+      "allowed_tools": [
+        "calendar.list",
+        "contacts.search",
+        "email.send"
+      ],
+      "allowed_hosts": [],
+      "denied_tools": [],
+      "arg_rules": {
+        "email.send": {
+          "to": {
+            "subset_of": "$contacts.trusted"
+          },
+          "body": {
+            "not_contains_class": [
+              "bank",
+              "medical",
+              "personal",
+              "financial",
+              "identity"
+            ]
+          }
+        }
+      },
+      "flow_rules": [
+        {
+          "id": "FR1",
+          "when": "context.untrusted",
+          "sinks": [
+            "email.*",
+            "web.*",
+            "sms.*",
+            "chat.send",
+            "calendar.invite",
+            "calendar.share",
+            "file.share",
+            "bank.*",
+            "shell.exec"
+          ],
+          "require": {
+            "recipient_or_host": "in_user_task_or_trusted_contacts"
+          }
+        }
+      ],
+      "on_violation": "block"
+    },
+    "research": {
+      "version": 1,
+      "task_class": "research",
+      "allowed_tools": [
+        "notes.write",
+        "web.fetch",
+        "web.search"
+      ],
+      "allowed_hosts": [
+        "weather.com"
+      ],
+      "denied_tools": [],
+      "arg_rules": {},
+      "flow_rules": [
+        {
+          "id": "FR1",
+          "when": "context.untrusted",
+          "sinks": [
+            "email.*",
+            "web.*",
+            "sms.*",
+            "chat.send",
+            "calendar.invite",
+            "calendar.share",
+            "file.share",
+            "bank.*",
+            "shell.exec"
+          ],
+          "require": {
+            "recipient_or_host": "in_user_task_or_trusted_contacts"
+          }
+        }
+      ],
+      "on_violation": "block"
+    }
+  },
+  "changelog": [],
+  "rejected": [],
+  "catalog": {
+    "tools": 48
+  }
+}

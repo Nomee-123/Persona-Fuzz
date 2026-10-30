@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://persona-fuzz.dev/contracts/policy.schema.json",
+  "title": "Persona-Fuzz policy IR",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version", "task_class", "allowed_tools", "allowed_hosts", "denied_tools",
+    "arg_rules", "flow_rules", "on_violation"
+  ],
+  "properties": {
+    "version": { "const": 1 },
+    "task_class": { "type": "string" },
+    "allowed_tools": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "allowed_hosts": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "denied_tools": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "arg_rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "in_set": { "type": "string" },
+            "subset_of": { "type": "string" },
+            "domain_in": { "type": "array", "items": { "type": "string" } },
+            "prefix": { "type": "string" },
+            "regex_not": { "type": "string" },
+            "not_contains_class": { "type": "array", "items": { "type": "string" } },
+            "max_count": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "flow_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "when", "sinks", "require"],
+        "properties": {
+          "id": { "type": "string" },
+          "when": { "enum": ["context.untrusted"] },
+          "sinks": { "type": "array", "items": { "type": "string" } },
+          "require": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "boolean"] }
+          }
+        }
+      }
+    },
+    "on_violation": { "enum": ["block", "ask"] }
+  }
+}

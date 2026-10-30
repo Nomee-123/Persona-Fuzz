@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://persona-fuzz.dev/contracts/run_summary.schema.json",
+  "title": "Persona-Fuzz run summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "status",
+    "started_at",
+    "finished_at",
+    "synthetic_fixture",
+    "dataset_source",
+    "config",
+    "metrics",
+    "policy",
+    "curve",
+    "conditions",
+    "per_model",
+    "example_trace_ids",
+    "cost"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "running",
+        "completed",
+        "failed",
+        "idle"
+      ]
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "finished_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "synthetic_fixture": {
+      "type": "boolean"
+    },
+    "dataset_source": {
+      "enum": [
+        "nemotron_personas_india",
+        "fallback"
+      ]
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset",
+        "n_eval",
+        "n_fit",
+        "agent_label",
+        "model",
+        "attack_types",
+        "canary_categories",
+        "compute_label",
+        "region",
+        "enforcement"
+      ],
+      "properties": {
+        "dataset": {
+          "type": "string"
+        },
+        "n_eval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_fit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "agent_label": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "attack_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "canary_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compute_label": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "enforcement": {
+          "enum": [
+            "gateway",
+            "openshell"
+          ]
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_runs",
+        "leaks_before",
+        "leaks_after",
+        "leak_rate_before",
+        "leak_rate_after",
+        "improvement",
+        "blocked_actions",
+        "avg_policy_bytes",
+        "utility_benign_d0",
+        "utility_benign_d4",
+        "utility_under_attack_d0",
+        "utility_under_attack_d4",
+        "adaptive_asr_d0",
+        "adaptive_asr_d4",
+        "false_block_rate",
+        "potency"
+      ],
+      "properties": {
+        "total_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leaks_before": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leaks_after": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leak_rate_before": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "leak_rate_after": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "improvement": {
+          "type": "number"
+        },
+        "blocked_actions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "avg_policy_bytes": {
+          "type": "number",
+          "minimum": 0
+        },
+        "utility_benign_d0": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "utility_benign_d4": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "utility_under_attack_d0": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "utility_under_attack_d4": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "adaptive_asr_d0": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "adaptive_asr_d4": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "false_block_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "potency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "attack_potency_low": {
+          "type": "boolean"
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_tools",
+        "allowed_hosts",
+        "denied_tools",
+        "catalog_tools",
+        "catalog_hosts",
+        "permissions_reduced",
+        "json",
+        "openshell_yaml"
+      ],
+      "properties": {
+        "allowed_tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "denied_tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "catalog_tools": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "catalog_hosts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "permissions_reduced": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "json": {
+          "type": "object"
+        },
+        "openshell_yaml": {
+          "type": "string"
+        }
+      }
+    },
+    "curve": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "iter",
+          "train_leak",
+          "heldout_leak",
+          "utility"
+        ],
+        "properties": {
+          "iter": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "train_leak": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "heldout_leak": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "utility": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "train_ci": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "heldout_ci": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "policy_bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "conditions": {
+      "type": "object",
+      "required": [
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "episodes",
+          "leak_rate",
+          "utility",
+          "utility_under_attack",
+          "targeted_asr",
+          "blocked_actions",
+          "ask_count",
+          "false_block_rate",
+          "latency_ms",
+          "tokens"
+        ],
+        "properties": {
+          "episodes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "leak_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "leak_ci": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "utility": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "utility_under_attack": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "targeted_asr": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "blocked_actions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ask_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "false_block_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "latency_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "tokens": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "per_model": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "model",
+          "leak_rate_d0",
+          "leak_rate_d4",
+          "utility_d0",
+          "utility_d4",
+          "tokens",
+          "latency_ms"
+        ],
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "leak_rate_d0": {
+            "type": "number"
+          },
+          "leak_rate_d4": {
+            "type": "number"
+          },
+          "utility_d0": {
+            "type": "number"
+          },
+          "utility_d4": {
+            "type": "number"
+          },
+          "tokens": {
+            "type": "integer"
+          },
+          "latency_ms": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "example_trace_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "persona_id",
+        "episode_id"
+      ],
+      "properties": {
+        "persona_id": {
+          "type": "string"
+        },
+        "episode_id": {
+          "type": "string"
+        },
+        "d4_episode_id": {
+          "type": "string"
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tokens",
+        "usd_estimate"
+      ],
+      "properties": {
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "usd_estimate": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "paired_mcnemar": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "before_only": {
+          "type": "integer"
+        },
+        "after_only": {
+          "type": "integer"
+        },
+        "p_value": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

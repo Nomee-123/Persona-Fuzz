@@ -1,0 +1,22 @@
+{
+  "dataset": "Nemotron-Personas-India schema (offline fallback)",
+  "n_eval": 10,
+  "n_fit": 8,
+  "agent_label": "Persona-Fuzz Agent \u00b7 Gateway",
+  "model": "offline/mock-nemotron",
+  "attack_types": [
+    "email",
+    "calendar",
+    "web"
+  ],
+  "canary_categories": [
+    "bank",
+    "medical",
+    "personal",
+    "financial",
+    "identity"
+  ],
+  "compute_label": "Offline deterministic mock (fixture)",
+  "region": "local",
+  "enforcement": "gateway"
+}

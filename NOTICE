@@ -1,0 +1,34 @@
+Persona-Fuzz
+Copyright 2026 Persona-Fuzz contributors
+
+This product includes software and data from the projects below.
+
+NVIDIA Nemotron-Personas-India
+- Source: https://huggingface.co/datasets/nvidia/Nemotron-Personas-India
+- Used to seed synthetic persona descriptions (config en_IN, streaming).
+- Dataset card terms must be reviewed before redistribution. Nemotron persona
+  rows are not committed to this repository. The committed fallback personas
+  are generated locally, follow the schema, and are flagged as synthetic.
+
+AgentDojo
+- Source: https://github.com/ethz-spylab/agentdojo
+- Research design inspiration for utility-under-attack and state-based checks.
+- No AgentDojo code is vendored.
+
+Progent
+- Paper: https://arxiv.org/abs/2504.11703
+- Research design inspiration for tool-level privilege policies. No code vendored.
+
+NVIDIA garak
+- Source: https://github.com/NVIDIA/garak
+- Optional, import-time adapter for injection payload seeds. Not bundled.
+
+NVIDIA OpenShell
+- Documentation: https://docs.nvidia.com/openshell/latest/reference/policy-schema.html
+- Policy YAML export targets the documented sandbox policy schema. OpenShell is
+  not bundled and is not required at runtime.
+
+Nebius Token Factory / Nebius Serverless AI Jobs
+- Used as hosted inference and optional batch compute providers. Credentials are
+  supplied by the operator through environment variables and are never stored in
+  this repository.

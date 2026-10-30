@@ -1,0 +1,15 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+node_modules/
+ui/dist/
+runs/*
+!runs/.gitkeep
+*.sqlite
+*.sqlite-journal
+.DS_Store
+.playwright/
